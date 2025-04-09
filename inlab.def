@@ -22,7 +22,7 @@ From: fedora:latest
     conda install -n inlab pip
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
-    #pip install cofi
+    pip install cofi
 
 %environment
     . /opt/miniconda3/etc/profile.d/conda.sh
