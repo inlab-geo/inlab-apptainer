@@ -15,7 +15,7 @@ sudo dnf install apptainer
 
 ## Using the singularity image to run the cofi-examples
 
-An immutable singularity image file can be built by runing the following command. 
+An immutable singularity image file `inlab.sif` can be built from the `inlab.def` file by runing the following command. 
 
 ```
 apptainer build inlab.sif inlab.def
