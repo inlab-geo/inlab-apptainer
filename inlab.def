@@ -23,6 +23,8 @@ From: fedora:latest
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
     pip install cofi papermill
+    pip install --upgrade pip ipython ipykernel
+    ipython kernel install --name "python3" --user
 
 %environment
     . /opt/miniconda3/etc/profile.d/conda.sh
