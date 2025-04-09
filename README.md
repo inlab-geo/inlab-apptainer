@@ -11,13 +11,17 @@ An immutable singularity image file can be built by runing the following command
 apptainer build inlab.sif inlab.def
 ```
 
-This alllows to create under linux an environemnt where InLab's software ecosystem and all it's dependencies are available. The image then can be use to run all the cofi notebooks without the need to install any of the packages required by the examples that may or may not be trivial to install. We first start an interactive shell. This assume that cofi-examples is available locally.
+This alllows to create under linux an environment/container where InLab's software ecosystem and all it's dependencies are available. The image then can be use to run all the cofi notebooks without the need to install any of the packages required by any of the examples that may or may not be trivial to install. 
+
+
+Once the image is buil we  start an interactive shell. 
+
 ```
 apptainer shell inlab.sif
 ```
 
-We then navigate to our local directory cofi-examples and can run all notebooks by executing
+We then navigate to our local cofi-examples directort and  run all notebooks by executing
+
 ```
 (inlab) python tools/validation/test_all_notebooks_scripts.py
 ```
-
