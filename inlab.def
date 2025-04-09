@@ -8,7 +8,11 @@ From: fedora:latest
     echo "Installing necessary build tools..."
     dnf -y install wget \
     			   bzip2 \
-                   git
+                   git \
+                   gcc \
+                   g++ \
+                   gfortran \
+                   cmake 
 
     mkdir -p /opt/miniconda3  # Install to a system-wide location
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
