@@ -2,8 +2,8 @@
 
 Apptainer files for the inlab software ecosystem. 
 
-[https://apptainer.org/](https://apptainer.org/)
-[https://apptainer.org/docs/user/latest/](https://apptainer.org/docs/user/latest/)
+- [https://apptainer.org/](https://apptainer.org/)
+- [https://apptainer.org/docs/user/latest/](https://apptainer.org/docs/user/latest/)
 
 An immutable singularity image file can be built by runing the following command. 
 
