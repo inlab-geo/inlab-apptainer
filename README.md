@@ -16,7 +16,7 @@ This alllows to create under linux an environemnt where InLab's software ecosyst
 apptainer shell inlab.sif
 ```
 
-We then navigate to cofi-examples and can run all notebooks by executiny
+We then navigate to our local directory cofi-examples and can run all notebooks by executing
 ```
 (inlab) python tools/validation/test_all_notebooks_scripts.py
 ```
