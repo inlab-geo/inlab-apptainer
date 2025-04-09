@@ -22,7 +22,7 @@ From: fedora:latest
     conda install -n inlab pip
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
-    pip install cofi papermill
+    pip install cofi geo-espresso papermill
     pip install --upgrade pip ipython ipykernel
     ipython kernel install --name "python3" --user
 
