@@ -1,6 +1,11 @@
 # inlab-apptainer
 
-Apptainer files for the inlab software ecosystem. An immutable singularity image file can be built by runing the following command. 
+Apptainer files for the inlab software ecosystem. 
+
+[https://apptainer.org/](https://apptainer.org/)
+[https://apptainer.org/docs/user/latest/](https://apptainer.org/docs/user/latest/)
+
+An immutable singularity image file can be built by runing the following command. 
 
 ```
 apptainer build inlab.sif inlab.def
