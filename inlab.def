@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: fedora:latest
+
+%post
+    echo "Updating Fedora packages..."
+    dnf -y update
+
+    echo "Installing necessary build tools..."
+    dnf -y install wget \
+    			   bzip2 \
+    			   suitesparse-devel
+
+    mkdir -p /opt/miniconda3  # Install to a system-wide location
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+    bash /tmp/miniconda.sh -b -u -p /opt/miniconda3
+    rm /tmp/miniconda.sh
+
+    PATH="/opt/miniconda3/bin:$PATH"  # Add to PATH during build
+    conda init --all
+
+    conda create -n inlab -c gimli -c conda-forge "pygimli>=1.5.0"
+    conda install -n inlab pip
+    . /opt/miniconda3/etc/profile.d/conda.sh
+    conda activate inlab
+    pip install cofi
+
+%environment
+    . /opt/miniconda3/etc/profile.d/conda.sh
+    conda activate inlab
