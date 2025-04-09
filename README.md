@@ -35,6 +35,7 @@ We then navigate to our local cofi-examples directort and  run all notebooks by 
 python tools/run_notebooks/run_notebooks.py all
 ```
 
+and all scripts by executing
 ```
 python tools/validation/test_all_notebooks_scripts.py
 ```
