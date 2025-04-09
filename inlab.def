@@ -7,8 +7,7 @@ From: fedora:latest
 
     echo "Installing necessary build tools..."
     dnf -y install wget \
-    			   bzip2 \
-    			   suitesparse-devel
+    			   bzip2 
 
     mkdir -p /opt/miniconda3  # Install to a system-wide location
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
@@ -17,12 +16,13 @@ From: fedora:latest
 
     PATH="/opt/miniconda3/bin:$PATH"  # Add to PATH during build
     conda init --all
-
-    conda create -n inlab -c gimli -c conda-forge "pygimli>=1.5.0"
+    conda update conda
+    # https://github.com/gimli-org/gimli/issues/761
+    conda create -n inlab -c gimli -c conda-forge "pygimli>=1.5.0" suitesparse=5
     conda install -n inlab pip
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
-    pip install cofi
+    #pip install cofi
 
 %environment
     . /opt/miniconda3/etc/profile.d/conda.sh
