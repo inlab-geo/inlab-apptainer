@@ -32,9 +32,9 @@ apptainer shell inlab.sif
 We then navigate to our local cofi-examples directort and  run all notebooks by executing
 
 ```
-(inlab) python tools/run_notebooks/run_notebooks.py all
+python tools/run_notebooks/run_notebooks.py all
 ```
 
 ```
-(inlab) python tools/validation/test_all_notebooks_scripts.py
+python tools/validation/test_all_notebooks_scripts.py
 ```
