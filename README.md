@@ -8,9 +8,9 @@ Apptainer files for the inlab software ecosystem.
 ## Installing apptainer
 
 Apptainer can be installed on any recent linux distribution, on bare-metal or inside a Virtual Machine and is likely to be 
-[https://apptainer.org/docs/admin/1.0/installation.html]([https://apptainer.org/docs/admin/1.0/installation.html)
+[https://apptainer.org/docs/admin/1.0/installation.html](https://apptainer.org/docs/admin/1.0/installation.html)
 
-A basi installation is possible by simply using the package manager in the case of fedora `dnf`.
+A basic installation is possible by simply using the package manager e.g. on fedora `dnf`.
 ```
 sudo dnf install apptainer
 ```
