@@ -15,8 +15,6 @@ A basic installation is possible by simply using the package manager e.g. on fed
 sudo dnf install apptainer
 ```
 
-and on ubuntu via 
-
 ## Using the singularity image to run the cofi-examples
 
 An immutable singularity image file `inlab.sif` can be built from the `inlab.def` file by runing the following command. 
