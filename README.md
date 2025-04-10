@@ -7,11 +7,15 @@ Apptainer files for the inlab software ecosystem.
 
 ## Installing apptainer
 
-On fedora apptainer can be installed via dnf
+Apptainer can be installed on any recent linux distribution, on bare-metal or inside a Virtual Machine and is likely to be 
+[https://apptainer.org/docs/admin/1.0/installation.html]([https://apptainer.org/docs/admin/1.0/installation.html)
 
+A basi installation is possible by simply using the package manager in the case of fedora `dnf`.
 ```
 sudo dnf install apptainer
 ```
+
+and on ubuntu via 
 
 ## Using the singularity image to run the cofi-examples
 
