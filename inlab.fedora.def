@@ -12,6 +12,7 @@ From: fedora:latest
                    gcc \
                    g++ \
                    gfortran \
+                   awk \
                    cmake 
 
     mkdir -p /opt/miniconda3  # Install to a system-wide location
