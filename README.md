@@ -41,6 +41,11 @@ python tools/validation/test_all_notebooks_scripts.py
 ```
 
 ## Notes
+PyGimli installed via conda appears to be built with numpy 1.x this means it is not comaptible with numnpy 2.x. The apptainer image thus uses numpy 1.x and a special branch of pyfm2d that also uses numpy 1.x and is built from source using
 
-- pygimli installed via conda appears to be built with numpy 1.x this means it is not comaptible with numnpy 2.x. The apptainer image thus uses numpy 1.x and a special branch of pyfm2d that also uses numpy. 1.x [https://numpy.org/devdocs/numpy_2_0_migration_guide.html(]https://numpy.org/devdocs/numpy_2_0_migration_guide.html)
-- 
+```
+pip install git+https://github.com/inlab-geo/pyfm2d@numpy-1.x
+```
+
+See [https://numpy.org/doc/stable/numpy_2_0_migration_guide.html](https://numpy.org/doc/stable/numpy_2_0_migration_guide.html) for more details
+
