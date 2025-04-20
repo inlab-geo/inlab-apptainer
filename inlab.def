@@ -32,6 +32,7 @@ From: fedora:latest
     pip install git+https://github.com/inlab-geo/pyrf96  
     pip install git+https://github.com/inlab-geo/pyhk
     pip install git+https://github.com/inlab-geo/pysurf96
+    pip install git+https://github.com/JuergHauser/PyP223.git
     pip install cofi geo-espresso papermill
     pip install --upgrade pip ipython ipykernel
     ipython kernel install --name "python3" --user
