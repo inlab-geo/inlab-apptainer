@@ -25,13 +25,14 @@ From: fedora:latest
     conda update conda
     # https://github.com/gimli-org/gimli/issues/761
     conda create -n inlab -c gimli -c conda-forge "pygimli>=1.5.0" suitesparse=5
-    conda install -n inlab pip
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
-    pip install cofi geo-espresso pyfm2d papermill
+    # pygimli requires numpy 1.x when installed from conda so we need to use the numpy 1.x branch for pyfm2d
+    pip install git+https://github.com/inlab-geo/pyfm2d@numpy-1.x
     pip install git+https://github.com/inlab-geo/pyrf96  
     pip install git+https://github.com/inlab-geo/pyhk
     pip install git+https://github.com/inlab-geo/pysurf96
+    pip install cofi geo-espresso papermill
     pip install --upgrade pip ipython ipykernel
     ipython kernel install --name "python3" --user
 

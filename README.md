@@ -18,7 +18,7 @@ sudo dnf install apptainer
 An immutable singularity image file `inlab.sif` can be built from the `inlab.fedora.def` file by runing the following command. 
 
 ```
-apptainer build inlab.sif inlab.fedora.def
+apptainer build inlab.sif inlab.def
 ```
 
 This alllows to create under linux an environment/container where InLab's software ecosystem and all it's dependencies are available. The image then can be use to run all the cofi notebooks without the need to install any of the packages required by any of the examples that may or may not be trivial to install. 
