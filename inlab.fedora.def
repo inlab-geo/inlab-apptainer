@@ -2,8 +2,9 @@ Bootstrap: docker
 From: fedora:latest
 
 %post
-    echo "Updating Fedora packages..."
-    dnf -y update
+    # deactivate this for the time being
+    #echo "Updating Fedora packages..."
+    #dnf -y update
 
     echo "Installing necessary build tools..."
     dnf -y install wget \
