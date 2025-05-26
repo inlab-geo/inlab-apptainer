@@ -15,7 +15,7 @@ sudo dnf install apptainer
 
 ## Using the singularity image to run the cofi-examples
 
-An immutable singularity image file `inlab.sif` can be built from the `inlab.fedora.def` file by runing the following command. atlernativelty one may use the `inlab.unbuntu.def` file to create an ubunutu based image.
+An immutable singularity image file `inlab.sif` can be built from the `inlab.fedora.def` file by runing the following command. atlernativelty one may complete the `inlab.unbuntu.def` file to create an ubunutu based image.
 ```
 apptainer build inlab.sif inlab.fedora.def
 ```
