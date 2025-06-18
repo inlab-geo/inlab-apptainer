@@ -4,7 +4,7 @@ From: fedora:latest
 %post
     # deactivate this for the time being
     #echo "Updating Fedora packages..."
-    #dnf -y update
+    dnf -y update
 
     echo "Installing necessary build tools..."
     dnf -y install wget \
@@ -36,6 +36,8 @@ From: fedora:latest
     pip install git+https://github.com/JuergHauser/PyP223.git
     pip install smt
     pip install cofi geo-espresso papermill nbformat
+    pip install jupyterlab
+    pip install notebook
     pip install --upgrade pip ipython ipykernel
     ipython kernel install --name "python3" --user
 

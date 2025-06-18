@@ -20,6 +20,12 @@ An immutable singularity image file `inlab.sif` can be built from the `inlab.fed
 apptainer build inlab.sif inlab.fedora.def
 ```
 
+If there are issues about the image not being built relate to `mksquashfs` not finishing the recommendation is to change the temporary directory used by aptiner to a directory other than `/tmp`. The following commands uses the current directory as the temporary directory used by apptainer and plces the image in the users home directory in a subfolder called apptainer, assuming it exists.
+```
+export APPTAINER_TMPDIR=$(pwd)
+apptainer build ~/apptainer/inlab.sif inlab.fedora.def
+```
+
 This alllows to create under linux an environment/container where InLab's software ecosystem and all it's dependencies are available. The image then can be use to run all the cofi notebooks without the need to install any of the packages required by any of the examples that may or may not be trivial to install. 
 
 Once the image is built we start an interactive shell. 
