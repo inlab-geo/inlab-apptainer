@@ -23,6 +23,11 @@ From: fedora:latest
 
     PATH="/opt/miniconda3/bin:$PATH"  # Add to PATH during build
     conda init --all
+
+    #conda pre-accept TOS to prevent build fail
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main --yes
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r --yes
+
     conda update conda
     # https://github.com/gimli-org/gimli/issues/761
     conda create -n inlab -c gimli -c conda-forge "pygimli>=1.5.0" suitesparse=5
