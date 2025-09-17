@@ -25,8 +25,8 @@ From: fedora:latest
     conda init --all
 
     #conda pre-accept TOS to prevent build fail
-    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main --yes
-    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r --yes
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main 
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r 
 
     conda update conda
     # https://github.com/gimli-org/gimli/issues/761
