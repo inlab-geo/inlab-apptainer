@@ -34,6 +34,7 @@ From: fedora:latest
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
     # pygimli requires numpy 1.x when installed from conda so we need to use the numpy 1.x branch for pyfm2d
+    pip install "numpy<2.0" "numba==0.59.*" "llvmlite==0.42.*" "seaborn>=0.13"
     pip install git+https://github.com/inlab-geo/pyfm2d@numpy-1.x
     pip install git+https://github.com/inlab-geo/pyrf96  
     pip install git+https://github.com/inlab-geo/pyhk
