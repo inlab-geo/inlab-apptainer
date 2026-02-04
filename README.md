@@ -1,6 +1,6 @@
 # inlab-apptainer
 
-Apptainer files for the inlab software ecosystem. 
+Apptainer files for the inlab software ecosystem.
 
 - [https://apptainer.org/](https://apptainer.org/)
 - [https://apptainer.org/docs/user/latest/](https://apptainer.org/docs/user/latest/)
@@ -13,44 +13,58 @@ On fedora apptainer can be installed via dnf
 sudo dnf install apptainer
 ```
 
-## Using the singularity image to run the cofi-examples
+## Available container definitions
 
-An immutable singularity image file `inlab.sif` can be built from the `inlab.fedora.def` file by runing the following command. atlernativelty one may complete the `inlab.unbuntu.def` file to create an ubunutu based image.
+| Definition | Description |
+|------------|-------------|
+| `inlab.conda.def` | Uses Miniconda with pygimli from conda-forge. Requires numpy 1.x due to conda pygimli constraints. |
+| `inlab.py314.def` | Uses Python 3.14 with pygimli built from source. Supports numpy 2.x. |
+
+## Building containers
+
+Use the provided build script which auto-detects conda vs native containers and sets up appropriate cache bind mounts:
+
 ```
-apptainer build inlab.sif inlab.fedora.def
+bash build.sh inlab.conda    # Build conda-based container
+bash build.sh inlab.py314    # Build Python 3.14 container
 ```
 
-This alllows to create under linux an environment/container where InLab's software ecosystem and all it's dependencies are available. The image then can be use to run all the cofi notebooks without the need to install any of the packages required by any of the examples that may or may not be trivial to install. 
-
-Once the image is built we start an interactive shell. 
-
+Or build manually:
 ```
-apptainer shell inlab.sif
+APPTAINER_TMPDIR=$(pwd) apptainer build inlab.conda.sif inlab.conda.def
 ```
 
-We then navigate to our local cofi-examples directort and  run all notebooks by executing
+## Using the container
+
+Once the image is built, start an interactive shell:
+
+```
+apptainer shell inlab.conda.sif
+```
+
+You can then navigate to your local cofi-examples directory and run all notebooks:
 
 ```
 python tools/run_notebooks/run_notebooks.py all
 ```
 
-and all scripts by executing
+And all scripts:
 ```
 python tools/validation/test_all_notebooks_scripts.py
 ```
 
 ## Notes
 
-If there are issues about the image not being built relate to `mksquashfs` not finishing the recommendation is to change the temporary directory used by aptiner to a directory other than `/tmp`. The following commands uses the current directory as the temporary directory used by apptainer and plces the image in the users home directory in a subfolder called apptainer, assuming it exists.
+### Temporary directory issues
+
+If there are issues about the image not being built related to `mksquashfs` not finishing, the recommendation is to change the temporary directory used by apptainer. The build script handles this automatically, or you can set it manually:
 ```
 export APPTAINER_TMPDIR=$(pwd)
-apptainer build ~/apptainer/inlab.sif inlab.fedora.def
 ```
 
-PyGimli installed via conda appears to be built with numpy 1.x this means it is not comaptible with numpy 2.x. The apptainer image thus uses numpy 1.x and a special branch of pyfm2d that also uses numpy 1.x and is built from source using
-```
-pip install git+https://github.com/inlab-geo/pyfm2d@numpy-1.x
-```
+### NumPy compatibility
 
-See [https://numpy.org/doc/stable/numpy_2_0_migration_guide.html](https://numpy.org/doc/stable/numpy_2_0_migration_guide.html) for more details
+- **inlab.conda.def**: PyGimli installed via conda is built with numpy 1.x, so this container uses numpy 1.x and a special branch of pyfm2d.
+- **inlab.py314.def**: PyGimli is built from source with numpy 2.x support, allowing use of the latest numpy features.
 
+See [numpy 2.0 migration guide](https://numpy.org/doc/stable/numpy_2_0_migration_guide.html) for more details.

@@ -1,0 +1,114 @@
+Bootstrap: docker
+From: fedora:latest
+
+%setup
+    # Create cache directories in container for bind mounts
+    mkdir -p ${APPTAINER_ROOTFS}/root/.cache/pip
+
+%post
+
+    dnf -y update
+
+    echo "Installing necessary build tools and dependencies..."
+    dnf -y install wget \
+                   bzip2 \
+                   git \
+                   subversion \
+                   patch \
+                   mercurial \
+                   which \
+                   curl \
+                   unzip \
+                   gcc \
+                   gcc-c++ \
+                   gfortran \
+                   make \
+                   cmake \
+                   pandoc \
+                   clang \
+                   python3.14 \
+                   python3.14-devel \
+                   python3.14-pip \
+                   boost-devel \
+                   boost-python3-devel \
+                   libedit-devel \
+                   suitesparse-devel \
+                   openblas-devel \
+                   cppunit-devel \
+                   lapack-devel \
+                   blas-devel
+
+    # Create installation directory for gimli
+    mkdir -p /opt/gimli
+    cd /opt/gimli
+
+    echo "Cloning pygimli source..."
+    git clone https://github.com/gimli-org/gimli.git
+
+    # Install Python build dependencies (system-wide, no venv needed in container)
+    python3.14 -m pip install --upgrade pip setuptools wheel
+    python3.14 -m pip install numpy matplotlib scipy
+    # Sphinx (needed for cmake to find sphinx-build)
+    python3.14 -m pip install sphinx sphinx-book-theme sphinx-design sphinx-togglebutton myst-nb sphinx-gallery pypandoc sphinxcontrib-mermaid sphinx-copybutton
+
+    # Check if dev_requirements.txt exists and install
+    if [ -f /opt/gimli/gimli/dev_requirements.txt ]; then
+        python3.14 -m pip install -r /opt/gimli/gimli/dev_requirements.txt
+    fi
+
+    # Build gimli from source (out of source build)
+    mkdir -p /opt/gimli/build
+    cd /opt/gimli/build
+
+    # Manually download and build Triangle (wget2 has issues with the auto-download)
+    mkdir -p /opt/gimli/thirdParty/src/triangle
+    cd /opt/gimli/thirdParty/src/triangle
+    curl -L -o triangle.zip http://www.netlib.org/voronoi/triangle.zip
+    unzip -o triangle.zip
+    # Build Triangle as a library (use C89 standard for old K&R code)
+    cc -std=gnu89 -O -DLINUX -DTRILIBRARY -DNO_TIMER -fPIC -c triangle.c
+    ar r libtriangle.a triangle.o
+    # Install Triangle
+    mkdir -p /opt/gimli/thirdParty/dist-GNU-15.2.1-64/lib
+    mkdir -p /opt/gimli/thirdParty/dist-GNU-15.2.1-64/include
+    cp libtriangle.a /opt/gimli/thirdParty/dist-GNU-15.2.1-64/lib/
+    cp triangle.h /opt/gimli/thirdParty/dist-GNU-15.2.1-64/include/
+    cd /opt/gimli/build
+
+    cmake ../gimli \
+        -DPYVERSION=3.14 \
+        -DPython_EXECUTABLE=/usr/bin/python3.14 \
+        -DPython_INCLUDE_DIR=/usr/include/python3.14 \
+        -DTriangle_INCLUDE_DIR=/opt/gimli/thirdParty/dist-GNU-15.2.1-64/include \
+        -DTriangle_LIBRARIES=/opt/gimli/thirdParty/dist-GNU-15.2.1-64/lib/libtriangle.a
+    make -j$(nproc) gimli
+    make pygimli J=$(nproc)
+
+    # Verify the build
+    cd /opt/gimli
+    export PYTHONPATH=/opt/gimli/gimli:$PYTHONPATH
+    export LD_LIBRARY_PATH=/opt/gimli/build/lib:$LD_LIBRARY_PATH
+    python3.14 -c 'import pygimli as pg; print(pg.__version__)'
+
+    # Install additional Python packages
+    python3.14 -m pip install numba llvmlite "seaborn>=0.13"
+    python3.14 -m pip install astroquery
+    python3.14 -m pip install marimo
+    python3.14 -m pip install git+https://github.com/inlab-geo/pyfm2d@feat/large-problem-memory-optimization
+    python3.14 -m pip install git+https://github.com/inlab-geo/pyrf96
+    python3.14 -m pip install git+https://github.com/inlab-geo/pyhk
+    python3.14 -m pip install git+https://github.com/inlab-geo/pysurf96
+    python3.14 -m pip install git+https://github.com/JuergHauser/PyP223.git
+    python3.14 -m pip install smt
+    python3.14 -m pip install cofi papermill nbformat
+    python3.14 -m pip install jupyterlab
+    python3.14 -m pip install notebook
+    python3.14 -m pip install --upgrade ipython ipykernel
+    python3.14 -m ipykernel install --name "python3"
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PYTHONPATH=/opt/gimli/gimli:$PYTHONPATH
+    export LD_LIBRARY_PATH=/opt/gimli/build/lib:$LD_LIBRARY_PATH
+    export PATH=/opt/gimli/build/bin:$PATH

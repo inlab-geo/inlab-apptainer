@@ -1,7 +1,13 @@
 Bootstrap: docker
 From: fedora:latest
 
+%setup
+    # Create cache directories in container for bind mounts
+    mkdir -p ${APPTAINER_ROOTFS}/root/.cache/pip
+    mkdir -p ${APPTAINER_ROOTFS}/opt/miniconda3/pkgs
+
 %post
+
     # deactivate this for the time being
     #echo "Updating Fedora packages..."
     dnf -y update
@@ -14,7 +20,8 @@ From: fedora:latest
                    g++ \
                    gfortran \
                    awk \
-                   cmake 
+                   cmake \
+                   pandoc 
 
     mkdir -p /opt/miniconda3  # Install to a system-wide location
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
@@ -36,18 +43,23 @@ From: fedora:latest
     # pygimli requires numpy 1.x when installed from conda so we need to use the numpy 1.x branch for pyfm2d
     pip install "numpy<2.0" "numba==0.59.*" "llvmlite==0.42.*" "seaborn>=0.13"
     pip install astroquery
+    pip install marimo
     pip install git+https://github.com/inlab-geo/pyfm2d@numpy-1.x
     pip install git+https://github.com/inlab-geo/pyrf96  
     pip install git+https://github.com/inlab-geo/pyhk
     pip install git+https://github.com/inlab-geo/pysurf96
     pip install git+https://github.com/JuergHauser/PyP223.git
     pip install smt
-    pip install cofi geo-espresso papermill nbformat
+    pip install cofi papermill nbformat
     pip install jupyterlab
     pip install notebook
     pip install --upgrade pip ipython ipykernel
     ipython kernel install --name "python3" --user
+    # Sphinx docs build requirements
+    pip install sphinx sphinx-book-theme sphinx-design sphinx-togglebutton myst-nb sphinx-gallery pypandoc sphinxcontrib-mermaid sphinx-copybutton
 
 %environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
     . /opt/miniconda3/etc/profile.d/conda.sh
     conda activate inlab
