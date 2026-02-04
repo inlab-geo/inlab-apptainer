@@ -10,7 +10,8 @@ From: fedora:latest
     dnf -y update
 
     echo "Installing necessary build tools and dependencies..."
-    dnf -y install vim \
+    dnf -y install hostname \
+                   vim \
                    wget \
                    bzip2 \
                    git \
@@ -118,3 +119,5 @@ From: fedora:latest
     export PYTHONPATH=/opt/gimli/gimli:$PYTHONPATH
     export LD_LIBRARY_PATH=/opt/gimli/build/lib:$LD_LIBRARY_PATH
     export PATH=/opt/gimli/build/bin:$PATH
+    export PROMPT_DIRTRIM=2
+    export PS1='[\u@\h \w]\$ '
