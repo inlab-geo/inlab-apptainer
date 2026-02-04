@@ -36,7 +36,9 @@ From: fedora:latest
                    openblas-devel \
                    cppunit-devel \
                    lapack-devel \
-                   blas-devel
+                   blas-devel \
+                   proj-devel \
+                   geos-devel
 
     # Create installation directory for gimli
     mkdir -p /opt/gimli
@@ -91,7 +93,8 @@ From: fedora:latest
     python3.14 -c 'import pygimli as pg; print(pg.__version__)'
 
     # Install additional Python packages
-    python3.14 -m pip install numba llvmlite "seaborn>=0.13"
+    python3.14 -m pip install numba llvmlite "seaborn>=0.13" cmcrameri
+    python3.14 -m pip install shapely cartopy seislib
     python3.14 -m pip install astroquery
     python3.14 -m pip install marimo
     python3.14 -m pip install git+https://github.com/inlab-geo/pyfm2d@feat/large-problem-memory-optimization
