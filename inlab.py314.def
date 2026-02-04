@@ -10,7 +10,8 @@ From: fedora:latest
     dnf -y update
 
     echo "Installing necessary build tools and dependencies..."
-    dnf -y install wget \
+    dnf -y install vim \
+                   wget \
                    bzip2 \
                    git \
                    subversion \
