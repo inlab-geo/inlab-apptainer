@@ -7,7 +7,13 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-DEF_FILE="$1.def"
+if [[ "$1" == *.def ]]; then
+    DEF_FILE="$1"
+    NAME="${1%.def}"
+else
+    DEF_FILE="$1.def"
+    NAME="$1"
+fi
 
 if [ ! -f "$DEF_FILE" ]; then
     echo "Error: $DEF_FILE not found"
@@ -25,4 +31,4 @@ if grep -q "miniconda" "$DEF_FILE"; then
     echo "Detected conda-based container, enabling conda cache bind mount"
 fi
 
-APPTAINER_TMPDIR=$PWD apptainer build $BIND_ARGS "$1.sif" "$DEF_FILE"
+APPTAINER_TMPDIR=$PWD apptainer build $BIND_ARGS "$NAME.sif" "$DEF_FILE"
