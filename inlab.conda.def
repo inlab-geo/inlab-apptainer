@@ -53,6 +53,7 @@ From: fedora:latest
     pip install cofi papermill nbformat
     pip install jupyterlab
     pip install notebook
+    pip install seislib
     pip install --upgrade pip ipython ipykernel
     ipython kernel install --name "python3" --user
     # Sphinx docs build requirements
