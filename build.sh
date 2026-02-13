@@ -20,9 +20,16 @@ if [ ! -f "$DEF_FILE" ]; then
     exit 1
 fi
 
+# Bind host dnf cache if build host is Fedora
+BIND_ARGS=""
+if [ -f /etc/fedora-release ] && [ -d /var/cache/dnf ]; then
+    BIND_ARGS="--bind /var/cache/dnf:/var/cache/dnf"
+    echo "Fedora host detected, binding dnf cache"
+fi
+
 # Always create pip cache
 mkdir -p "$HOME/.cache/pip"
-BIND_ARGS="--bind $HOME/.cache/pip:/root/.cache/pip"
+BIND_ARGS="$BIND_ARGS --bind $HOME/.cache/pip:/root/.cache/pip"
 
 # Add conda bind mount only if the def file uses miniconda
 if grep -q "miniconda" "$DEF_FILE"; then

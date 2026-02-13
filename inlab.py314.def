@@ -4,43 +4,32 @@ From: fedora:latest
 %setup
     # Create cache directories in container for bind mounts
     mkdir -p ${APPTAINER_ROOTFS}/root/.cache/pip
+    mkdir -p ${APPTAINER_ROOTFS}/var/cache/dnf
 
 %post
+
+    # Use host dnf cache when available
+    echo "keepcache=1" >> /etc/dnf/dnf.conf
 
     dnf -y update
 
     echo "Installing necessary build tools and dependencies..."
-    dnf -y install hostname \
-                   vim \
-                   wget \
-                   bzip2 \
-                   git \
-                   subversion \
-                   patch \
-                   mercurial \
-                   which \
-                   curl \
-                   unzip \
-                   gcc \
-                   gcc-c++ \
-                   gfortran \
-                   make \
-                   cmake \
-                   pandoc \
-                   clang \
-                   python3.14 \
-                   python3.14-devel \
-                   python3.14-pip \
-                   boost-devel \
-                   boost-python3-devel \
-                   libedit-devel \
-                   suitesparse-devel \
-                   openblas-devel \
-                   cppunit-devel \
-                   lapack-devel \
-                   blas-devel \
-                   proj-devel \
-                   geos-devel
+    dnf -y install \
+        hostname which \
+        vim \
+        wget curl \
+        bzip2 unzip \
+        git subversion mercurial patch \
+        gcc gcc-c++ gfortran clang \
+        make cmake \
+        pandoc \
+        python3.14 python3.14-devel python3.14-pip \
+        boost-devel boost-python3-devel \
+        libedit-devel \
+        openblas-devel lapack-devel blas-devel \
+        suitesparse-devel \
+        cppunit-devel \
+        proj-devel geos-devel
 
     # Create installation directory for gimli
     mkdir -p /opt/gimli
@@ -49,13 +38,16 @@ From: fedora:latest
     echo "Cloning pygimli source..."
     git clone https://github.com/gimli-org/gimli.git
 
-    # Install Python build dependencies (system-wide, no venv needed in container)
+    # Python build toolchain
     python3.14 -m pip install --upgrade pip setuptools wheel
+
+    # Core scientific stack (needed for gimli build)
     python3.14 -m pip install numpy matplotlib scipy
-    # Sphinx (needed for cmake to find sphinx-build)
+
+    # Sphinx documentation toolchain (needed for cmake to find sphinx-build)
     python3.14 -m pip install sphinx sphinx-book-theme sphinx-design sphinx-togglebutton myst-nb sphinx-gallery pypandoc sphinxcontrib-mermaid sphinx-copybutton
 
-    # Check if dev_requirements.txt exists and install
+    # Gimli dev requirements
     if [ -f /opt/gimli/gimli/dev_requirements.txt ]; then
         python3.14 -m pip install -r /opt/gimli/gimli/dev_requirements.txt
     fi
@@ -94,23 +86,30 @@ From: fedora:latest
     export LD_LIBRARY_PATH=/opt/gimli/build/lib:$LD_LIBRARY_PATH
     python3.14 -c 'import pygimli as pg; print(pg.__version__)'
 
-    # Install additional Python packages
-    python3.14 -m pip install numba llvmlite "seaborn>=0.13" cmcrameri
+    # Additional scientific / numerical packages
+    python3.14 -m pip install numba llvmlite
+    python3.14 -m pip install "seaborn>=0.13" cmcrameri
     python3.14 -m pip install shapely cartopy
+    python3.14 -m pip install smt
+
+    # Geophysics / seismology
     python3.14 -m pip install git+https://github.com/obspy/obspy.git
     python3.14 -m pip install seislib
     python3.14 -m pip install astroquery
-    python3.14 -m pip install marimo
-    python3.14 -m pip install git+https://github.com/inlab-geo/pyfm2d@feat/large-problem-memory-optimization
+
+    # InLab geoscience packages
+    python3.14 -m pip install git+https://github.com/inlab-geo/cofi@bayesbay-p314-fix
+    python3.14 -m pip install git+https://github.com/inlab-geo/pyfm2d
     python3.14 -m pip install git+https://github.com/inlab-geo/pyrf96
     python3.14 -m pip install git+https://github.com/inlab-geo/pyhk
     python3.14 -m pip install git+https://github.com/inlab-geo/pysurf96
     python3.14 -m pip install git+https://github.com/JuergHauser/PyP223.git
-    python3.14 -m pip install smt
-    python3.14 -m pip install cofi papermill nbformat
-    python3.14 -m pip install jupyterlab
-    python3.14 -m pip install notebook
+
+    # Jupyter / notebook environment
+    python3.14 -m pip install jupyterlab notebook
     python3.14 -m pip install --upgrade ipython ipykernel
+    python3.14 -m pip install papermill nbformat
+    python3.14 -m pip install marimo
     python3.14 -m ipykernel install --name "python3"
 
 %environment
