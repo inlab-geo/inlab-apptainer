@@ -31,7 +31,7 @@ bash build.sh inlab.py313    # Build Python 3.13 container
 
 Or build manually:
 ```
-APPTAINER_TMPDIR=$(pwd) apptainer build inlab.conda.sif inlab.conda.def
+APPTAINER_TMPDIR=$(pwd) apptainer build inlab.py314.sif inlab.py314.def
 ```
 
 ## Using the container
