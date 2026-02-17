@@ -31,7 +31,6 @@ From: fedora:latest
                    python3.13 \
                    python3.13-devel \
                    boost-devel \
-                   boost-python3-devel \
                    libedit-devel \
                    suitesparse-devel \
                    openblas-devel \
@@ -87,7 +86,19 @@ From: fedora:latest
     # Get Python 3.13 include path dynamically
     PY_INCLUDE=$(python3.13 -c "import sysconfig; print(sysconfig.get_path('include'))")
 
+    cd /tmp
+    curl -LO https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.gz
+    tar xzf boost_1_87_0.tar.gz
+    cd boost_1_87_0
+    ./bootstrap.sh --with-python=python3.13
+    ./b2 --with-python python=3.13 link=shared install
+    ldconfig
+
+    # Return to gimli build directory
+    cd /opt/gimli/build
+
     cmake ../gimli \
+        -DBOOST_ROOT=/usr/local \
         -DPYVERSION=3.13 \
         -DPython_EXECUTABLE=/usr/bin/python3.13 \
         -DPython_INCLUDE_DIR=${PY_INCLUDE} \
