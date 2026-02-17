@@ -19,7 +19,6 @@ sudo dnf install apptainer
 |------------|--------|-------------|
 | `inlab.py314.def` | **Recommended** | Uses Python 3.14 with pygimli built from source. Supports numpy 2.x. |
 | `inlab.py313.def` | Maintained | Uses Python 3.13 with pygimli built from source. Supports numpy 2.x. |
-| `inlab.conda.def` | Deprecated | Uses Miniconda with pygimli from conda-forge. Requires numpy 1.x due to conda pygimli constraints. |
 
 ## Building containers
 
@@ -28,7 +27,6 @@ Use the provided build script which auto-detects conda vs native containers and 
 ```
 bash build.sh inlab.py314    # Build Python 3.14 container (recommended)
 bash build.sh inlab.py313    # Build Python 3.13 container
-bash build.sh inlab.conda    # Build conda-based container (deprecated)
 ```
 
 Or build manually:
@@ -63,10 +61,3 @@ If there are issues about the image not being built related to `mksquashfs` not 
 ```
 export APPTAINER_TMPDIR=$(pwd)
 ```
-
-### NumPy compatibility
-
-- **inlab.py313.def** / **inlab.py314.def**: PyGimli is built from source with numpy 2.x support, allowing use of the latest numpy features.
-- **inlab.conda.def** (deprecated): PyGimli installed via conda is built with numpy 1.x, so this container uses numpy 1.x and a special branch of pyfm2d.
-
-See [numpy 2.0 migration guide](https://numpy.org/doc/stable/numpy_2_0_migration_guide.html) for more details.
