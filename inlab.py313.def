@@ -30,7 +30,6 @@ From: fedora:latest
                    clang \
                    python3.13 \
                    python3.13-devel \
-                   python3.13-pip \
                    boost-devel \
                    boost-python3-devel \
                    libedit-devel \
@@ -41,6 +40,9 @@ From: fedora:latest
                    blas-devel \
                    proj-devel \
                    geos-devel
+
+    # Bootstrap pip for Python 3.13 (no python3.13-pip package in Fedora)
+    python3.13 -m ensurepip --upgrade
 
     # Create installation directory for gimli
     mkdir -p /opt/gimli
@@ -72,19 +74,25 @@ From: fedora:latest
     # Build Triangle as a library (use C89 standard for old K&R code)
     cc -std=gnu89 -O -DLINUX -DTRILIBRARY -DNO_TIMER -fPIC -c triangle.c
     ar r libtriangle.a triangle.o
-    # Install Triangle
-    mkdir -p /opt/gimli/thirdParty/dist-GNU-15.2.1-64/lib
-    mkdir -p /opt/gimli/thirdParty/dist-GNU-15.2.1-64/include
-    cp libtriangle.a /opt/gimli/thirdParty/dist-GNU-15.2.1-64/lib/
-    cp triangle.h /opt/gimli/thirdParty/dist-GNU-15.2.1-64/include/
+
+    # Install Triangle (use dynamic GCC version for path)
+    GCC_VERSION=$(gcc -dumpversion)
+    DIST_DIR="/opt/gimli/thirdParty/dist-GNU-${GCC_VERSION}-64"
+    mkdir -p ${DIST_DIR}/lib
+    mkdir -p ${DIST_DIR}/include
+    cp libtriangle.a ${DIST_DIR}/lib/
+    cp triangle.h ${DIST_DIR}/include/
     cd /opt/gimli/build
+
+    # Get Python 3.13 include path dynamically
+    PY_INCLUDE=$(python3.13 -c "import sysconfig; print(sysconfig.get_path('include'))")
 
     cmake ../gimli \
         -DPYVERSION=3.13 \
         -DPython_EXECUTABLE=/usr/bin/python3.13 \
-        -DPython_INCLUDE_DIR=/usr/include/python3.13 \
-        -DTriangle_INCLUDE_DIR=/opt/gimli/thirdParty/dist-GNU-15.2.1-64/include \
-        -DTriangle_LIBRARIES=/opt/gimli/thirdParty/dist-GNU-15.2.1-64/lib/libtriangle.a
+        -DPython_INCLUDE_DIR=${PY_INCLUDE} \
+        -DTriangle_INCLUDE_DIR=${DIST_DIR}/include \
+        -DTriangle_LIBRARIES=${DIST_DIR}/lib/libtriangle.a
     make -j$(nproc) gimli
     make pygimli J=$(nproc)
 
@@ -101,7 +109,7 @@ From: fedora:latest
     python3.13 -m pip install seislib
     python3.13 -m pip install astroquery
     python3.13 -m pip install marimo
-    python3.13 -m pip install git+https://github.com/inlab-geo/pyfm2d@feat/large-problem-memory-optimization
+    python3.13 -m pip install git+https://github.com/inlab-geo/pyfm2d
     python3.13 -m pip install git+https://github.com/inlab-geo/pyrf96
     python3.13 -m pip install git+https://github.com/inlab-geo/pyhk
     python3.13 -m pip install git+https://github.com/inlab-geo/pysurf96
