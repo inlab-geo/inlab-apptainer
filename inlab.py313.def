@@ -55,6 +55,7 @@ From: fedora:latest
     python3.13 -m pip install numpy matplotlib scipy
     # Sphinx (needed for cmake to find sphinx-build)
     python3.13 -m pip install sphinx sphinx-book-theme sphinx-design sphinx-togglebutton myst-nb sphinx-gallery pypandoc sphinxcontrib-mermaid sphinx-copybutton
+    python3.13 -m pip install pygccxml pyplusplus
 
     # Check if dev_requirements.txt exists and install
     if [ -f /opt/gimli/gimli/dev_requirements.txt ]; then
