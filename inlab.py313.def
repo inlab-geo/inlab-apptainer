@@ -41,8 +41,21 @@ From: fedora:42
                    proj-devel \
                    geos-devel
 
-    # Bootstrap pip for Python 3.13 (no python3.13-pip package in Fedora)
+    # Bootstrap pip for Python 3.13
     python3.13 -m ensurepip --upgrade
+
+    set -euxo pipefail
+
+    ln -sf /usr/bin/python3.13 /usr/local/bin/python3
+    ln -sf /usr/bin/python3.13 /usr/local/bin/python
+    hash -r
+
+    mkdir -p /opt/build-tmp
+    chmod 1777 /opt/build-tmp
+    export TMPDIR=/opt/build-tmp
+    export TMP=/opt/build-tmp
+    export TEMP=/opt/build-tmp
+    export PIP_CACHE_DIR=/root/.cache/pip
 
     # Create installation directory for gimli
     mkdir -p /opt/gimli
@@ -88,7 +101,7 @@ From: fedora:42
     # Get Python 3.13 include path dynamically
     PY_INCLUDE=$(python3.13 -c "import sysconfig; print(sysconfig.get_path('include'))")
 
-    cd /tmp
+    cd /opt/build-tmp
     curl -LO https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.gz
     tar xzf boost_1_87_0.tar.gz
     cd boost_1_87_0
@@ -111,7 +124,7 @@ From: fedora:42
         -DTriangle_INCLUDE_DIR=${DIST_DIR}/include \
         -DTriangle_LIBRARIES=${DIST_DIR}/lib/libtriangle.a
     make -j$(nproc) gimli
-    make pygimli J=$(nproc)
+    make -j$(nproc) pygimli
 
     # Verify the build
     cd /opt/gimli
