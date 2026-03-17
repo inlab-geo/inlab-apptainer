@@ -107,6 +107,7 @@ From: fedora:42
         -DPYVERSION=3.13 \
         -DPython_EXECUTABLE=/usr/bin/python3.13 \
         -DPython_INCLUDE_DIR=${PY_INCLUDE} \
+        -DCASTXML_EXECUTABLE=/usr/bin/castxml \
         -DTriangle_INCLUDE_DIR=${DIST_DIR}/include \
         -DTriangle_LIBRARIES=${DIST_DIR}/lib/libtriangle.a
     make -j$(nproc) gimli
