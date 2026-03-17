@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: fedora:latest
+From: fedora:42
 
 %setup
     # Create cache directories in container for bind mounts
@@ -26,6 +26,7 @@ From: fedora:latest
                    gfortran \
                    make \
                    cmake \
+                   castxml \
                    pandoc \
                    clang \
                    python3.13 \
