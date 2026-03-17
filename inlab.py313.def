@@ -99,6 +99,9 @@ From: fedora:42
     # Return to gimli build directory
     cd /opt/gimli/build
 
+    which castxml
+    castxml --version
+
     cmake ../gimli \
         -DBOOST_ROOT=/usr/local \
         -DPYVERSION=3.13 \
