@@ -128,8 +128,8 @@ From: fedora:42
 
     # Verify the build
     cd /opt/gimli
-    export PYTHONPATH=/opt/gimli/gimli:$PYTHONPATH
-    export LD_LIBRARY_PATH=/opt/gimli/build/lib:$LD_LIBRARY_PATH
+    export PYTHONPATH=/opt/gimli/gimli:${PYTHONPATH:-}
+    export LD_LIBRARY_PATH=/opt/gimli/build/lib:${LD_LIBRARY_PATH:-}
     python3.13 -c 'import pygimli as pg; print(pg.__version__)'
 
     # Install additional Python packages
@@ -154,8 +154,8 @@ From: fedora:42
 %environment
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
-    export PYTHONPATH=/opt/gimli/gimli:$PYTHONPATH
-    export LD_LIBRARY_PATH=/opt/gimli/build/lib:$LD_LIBRARY_PATH
-    export PATH=/opt/gimli/build/bin:$PATH
+    export PYTHONPATH=/opt/gimli/gimli:${PYTHONPATH:-}
+    export LD_LIBRARY_PATH=/opt/gimli/build/lib:${LD_LIBRARY_PATH:-}
+    export PATH=/opt/gimli/build/bin:${PATH:-}
     export PROMPT_DIRTRIM=2
     export PS1='[\u@\h \w]\$ '
