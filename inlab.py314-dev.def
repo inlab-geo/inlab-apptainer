@@ -98,7 +98,7 @@ From: fedora:latest
     python3.14 -m pip install astroquery
 
     # InLab geoscience packages
-    python3.14 -m pip install git+https://github.com/inlab-geo/cofi@bayesbay-p314-fix
+    python3.14 -m pip install git+https://github.com/inlab-geo/cofi
     python3.14 -m pip install git+https://github.com/inlab-geo/pyfm2d
     python3.14 -m pip install git+https://github.com/inlab-geo/pyrf96
     python3.14 -m pip install git+https://github.com/inlab-geo/pyhk

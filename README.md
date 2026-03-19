@@ -17,21 +17,23 @@ sudo dnf install apptainer
 
 | Definition | Status | Description |
 |------------|--------|-------------|
-| `inlab.py314.def` | **Recommended** | Uses Python 3.14 with pygimli built from source. Supports numpy 2.x. |
-| `inlab.py313.def` | Maintained | Uses Python 3.13 with pygimli built from source. Supports numpy 2.x. |
+| `inlab.py313.def` | **Recommended** | Uses Python 3.13 on Fedora 42 with pygimli built from source. Supports numpy 2.x. |
+| `inlab.py314-dev.def` | Dev | Uses Python 3.14 on Fedora latest with pygimli built from source. Installable from GitHub. |
+| `inlab.py313-dev.def` | Dev | Uses Python 3.13 on Fedora latest with pygimli built from source. Installable from GitHub. |
 
 ## Building containers
 
 Use the provided build script which auto-detects conda vs native containers and sets up appropriate cache bind mounts:
 
 ```
-bash build.sh inlab.py314    # Build Python 3.14 container (recommended)
-bash build.sh inlab.py313    # Build Python 3.13 container
+bash build.sh inlab.py313        # Build Python 3.13 container (recommended)
+bash build.sh inlab.py314-dev    # Build Python 3.14 dev container
+bash build.sh inlab.py313-dev    # Build Python 3.13 dev container
 ```
 
 Or build manually:
 ```
-APPTAINER_TMPDIR=$(pwd) apptainer build inlab.py314.sif inlab.py314.def
+APPTAINER_TMPDIR=$(pwd) apptainer build inlab.py313.sif inlab.py313.def
 ```
 
 ## Using the container
@@ -39,7 +41,7 @@ APPTAINER_TMPDIR=$(pwd) apptainer build inlab.py314.sif inlab.py314.def
 Once the image is built, start an interactive shell:
 
 ```
-apptainer shell inlab.py314.sif
+apptainer shell inlab.py313.sif
 ```
 
 You can then navigate to your local cofi-examples directory and run all notebooks:
