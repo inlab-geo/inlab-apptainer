@@ -91,6 +91,11 @@ From: fedora:latest
     python3.14 -m pip install "seaborn>=0.13" cmcrameri
     python3.14 -m pip install shapely cartopy
     python3.14 -m pip install smt
+    # CHOLMOD bindings for cofi's CoFIGaussianVI. PyPI ships scikit-sparse
+    # as source only; it builds against suitesparse-devel's headers in
+    # /usr/include/suitesparse (installed via dnf above).
+    python3.14 -m pip install "scikit-sparse>=0.5"
+    python3.14 -c 'from sksparse.cholmod import cho_factor'
 
     # Geophysics / seismology
     python3.14 -m pip install git+https://github.com/obspy/obspy.git
