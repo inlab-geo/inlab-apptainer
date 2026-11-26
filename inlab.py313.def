@@ -161,6 +161,11 @@ From: fedora:42
     python3.13 -m pip install git+https://github.com/inlab-geo/pysurf96
     python3.13 -m pip install git+https://github.com/JuergHauser/PyP223.git
     python3.13 -m pip install smt
+    # CHOLMOD bindings for cofi's CoFIGaussianVI. PyPI ships scikit-sparse
+    # as source only; it builds against suitesparse-devel's headers in
+    # /usr/include/suitesparse (installed via dnf above).
+    python3.13 -m pip install "scikit-sparse>=0.5"
+    python3.13 -c 'from sksparse.cholmod import cho_factor'
     python3.13 -m pip install cofi papermill nbformat
     python3.13 -m pip install jupyterlab
     python3.13 -m pip install notebook
