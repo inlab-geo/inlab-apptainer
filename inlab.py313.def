@@ -76,7 +76,12 @@ From: fedora:42
     # crashed the whole image build). Only PATH is exported, not PYTHONPATH,
     # so sphinx-build stays discoverable for cmake below without polluting
     # every later `python3.13 -m pip install`.
-    python3.13 -m venv /opt/sphinx-venv
+    # --system-site-packages lets Sphinx (and the sphinx-gallery tutorials it
+    # executes) import everything installed in the main Python 3.13 (cofi,
+    # pyfm2d, scikit-sparse, ...) and user-site installs such as the docs
+    # workflow's `pip install -e .`. Visibility is one-way: the main Python
+    # never sees this venv, so its nspkg.pth shims stay isolated.
+    python3.13 -m venv --system-site-packages /opt/sphinx-venv
     /opt/sphinx-venv/bin/pip install --upgrade pip
     /opt/sphinx-venv/bin/pip install sphinx sphinx-book-theme sphinx-design sphinx-togglebutton myst-nb sphinx-gallery pypandoc sphinxcontrib-mermaid sphinx-copybutton
     export PATH="${PATH}:/opt/sphinx-venv/bin"
@@ -161,6 +166,10 @@ From: fedora:42
     python3.13 -m pip install git+https://github.com/inlab-geo/pysurf96
     python3.13 -m pip install git+https://github.com/JuergHauser/PyP223.git
     python3.13 -m pip install smt
+    # cofi's docs workflow runs gen_gallery_scripts.py with the main Python,
+    # which imports pypandoc. Pure Python with no .pth shim, so it is safe
+    # outside the Sphinx venv.
+    python3.13 -m pip install pypandoc
     # CHOLMOD bindings for cofi's CoFIGaussianVI. PyPI ships scikit-sparse
     # as source only; it builds against suitesparse-devel's headers in
     # /usr/include/suitesparse (installed via dnf above).
@@ -177,6 +186,8 @@ From: fedora:42
     export LANG=C.UTF-8
     export PYTHONPATH=/opt/gimli/gimli:${PYTHONPATH:-}
     export LD_LIBRARY_PATH=/opt/gimli/build/lib:${LD_LIBRARY_PATH:-}
-    export PATH=/opt/gimli/build/bin:${PATH:-}
+    # Sphinx venv appended last: `sphinx-build` resolves there, while
+    # `python`/`pip` still resolve to the main Python 3.13.
+    export PATH=/opt/gimli/build/bin:${PATH:-}:/opt/sphinx-venv/bin
     export PROMPT_DIRTRIM=2
     export PS1='[\u@\h \w]\$ '
